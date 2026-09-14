@@ -1,14 +1,30 @@
-# TROPA SUSPEITA — Servidor Render
+# Drama Ragdoll V0.1
 
-Servidor multiplayer Node.js + Socket.IO preparado para o site:
-https://meinhastreetamong.netlify.app
+Protótipo web inspirado em jogos de ragdoll/cartoon.
 
-## Render
-- Runtime: Node
-- Build Command: npm install
-- Start Command: npm start
-- Instance Type: Free
-- Health Check Path: /health
+## Recursos
+- Ragdoll com física via Matter.js
+- Arrastar e arremessar com mouse/toque
+- Barra de Drama
+- Combo de ataques
+- 5 ataques temáticos:
+  - Chuva de Mensagens
+  - Avalanche de Figurinhas
+  - Áudio de 10 Minutos
+  - Sair do Grupo
+  - Rolo do Drama
+- Apelido e cor da roupa
 
-Depois que o Render terminar o deploy, abra a URL `https://...onrender.com`.
-Se aparecer JSON com `"status":"online"`, o servidor está funcionando.
+## Publicar no GitHub Pages
+1. Crie um repositório.
+2. Envie `index.html`.
+3. Ative GitHub Pages em Settings > Pages.
+
+## Publicar no Render
+1. Crie um Static Site.
+2. Conecte o repositório.
+3. Branch: `main`
+4. Build Command: deixe vazio.
+5. Publish Directory: `.`
+
+O arquivo `render.yaml` também pode ser usado como referência.

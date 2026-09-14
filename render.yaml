@@ -1,8 +1,6 @@
 services:
   - type: web
-    name: tropa-suspeita-server
-    runtime: node
-    plan: free
-    buildCommand: npm install
-    startCommand: npm start
-    healthCheckPath: /health
+    name: drama-ragdoll
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .
