@@ -1,13 +1,27 @@
-# BLACK GAME V0.2
+# BLACK GAME V0.3 — Cartoon Fiel
 
-Versão corrigida sem dependência externa de Matter.js.
+Versão com a identidade visual do personagem inspirada nas referências:
+- rosto mais fiel
+- cabelo curto com fade
+- porte atlético de jogador
+- uniforme branco/azul como visual principal
+- opção de uniforme de treino escuro
+- cenário de estádio/arena
 
-## Correção principal
-O personagem agora é desenhado e animado diretamente no HTML5 Canvas com física local, sem CDN.
-Isso evita a tela da arena aparecer vazia quando o carregamento do módulo externo falha.
+## Como publicar no GitHub
+Suba os arquivos na raiz do repositório:
+- `index.html`
+- `README.md`
 
-## Render
-Use como Static Site:
-- Branch: main
+## Como publicar no Render
+Crie/edite um Static Site:
+- Branch: `main`
 - Build Command: vazio
-- Publish Directory: .
+- Publish Directory: `.`
+
+## Mudanças principais da V0.3
+- personagem redesenhado em estilo cartoon fiel
+- cenário de estádio
+- melhor identidade visual
+- seleção de uniforme
+- manutenção da física local sem dependência externa
