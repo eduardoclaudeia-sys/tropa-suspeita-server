@@ -1,393 +1,350 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#111827" />
-  <title>Drama Ragdoll V0.1</title>
-  <style>
-    :root{
-      --bg:#0f172a; --panel:#111827; --card:#1f2937; --border:#334155;
-      --text:#f8fafc; --muted:#94a3b8; --accent:#22c55e; --danger:#ef4444;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:linear-gradient(180deg,#0f172a,#111827);color:var(--text)}
-    button,input,select{font:inherit}
-    .app{max-width:1200px;margin:0 auto;padding:16px}
-    .topbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
-    .meter{flex:1;min-width:220px}
-    .meter-row{display:flex;justify-content:space-between;font-weight:800;font-size:14px;margin-bottom:6px}
-    .bar{height:14px;border-radius:999px;background:#273449;overflow:hidden}
-    .bar>div{height:100%;width:0;background:linear-gradient(90deg,#22c55e,#facc15,#ef4444);transition:width .2s}
-    .pill,.btn{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:12px;padding:10px 14px}
-    .btn{cursor:pointer;font-weight:800}
-    .btn:hover{filter:brightness(1.08)}
-    .layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:14px}
-    .arena-card,.side-card{border:1px solid var(--border);background:rgba(17,24,39,.92);border-radius:18px;overflow:hidden}
-    .arena-head{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid var(--border);font-size:14px}
-    .arena-wrap{position:relative;aspect-ratio:4/3;min-height:360px;background:
-      radial-gradient(circle at 50% 20%,rgba(59,130,246,.14),transparent 30%),
-      linear-gradient(180deg,#172033,#111827)}
-    canvas{display:block;width:100%;height:100%;touch-action:none}
-    .ko{position:absolute;left:16px;right:16px;top:16px;padding:12px;text-align:center;font-size:22px;font-weight:1000;border:1px solid var(--border);border-radius:14px;background:rgba(31,41,55,.95)}
-    .hidden{display:none!important}
-    .attacks{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
-    .attack{min-height:64px;border:1px solid var(--border);background:#172033;color:var(--text);border-radius:14px;padding:8px;font-weight:800;cursor:pointer}
-    .attack:hover{background:#1f2937}
-    .side{display:grid;gap:12px;align-content:start}
-    .side-card{padding:14px}
-    .side-card h3{margin:0 0 10px}
-    label{display:block;font-size:13px;font-weight:700;margin-top:10px}
-    input,select{width:100%;margin-top:6px;background:#0f172a;color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px}
-    .muted{color:var(--muted);font-size:13px;line-height:1.45}
-    .log{min-height:42px}
-    @media(max-width:860px){
-      .layout{grid-template-columns:1fr}
-      .attacks{grid-template-columns:repeat(2,1fr)}
-      .side{grid-template-columns:1fr 1fr}
-    }
-    @media(max-width:560px){
-      .app{padding:10px}
-      .arena-wrap{min-height:430px}
-      .attacks{grid-template-columns:1fr 1fr}
-      .side{grid-template-columns:1fr}
-      .arena-head{flex-direction:column}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0f172a">
+<title>BLACK GAME V0.2</title>
+<style>
+:root{--bg:#0b1220;--panel:#111827;--card:#182235;--border:#334155;--text:#f8fafc;--muted:#94a3b8;--accent:#22c55e}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#0b1220,#111827);color:var(--text);font-family:Inter,system-ui,Arial,sans-serif}
+button,input,select{font:inherit}
+.app{max-width:1100px;margin:auto;padding:14px}
+.top{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.meter{flex:1;min-width:210px}
+.meterrow{display:flex;justify-content:space-between;font-size:14px;font-weight:800;margin-bottom:6px}
+.bar{height:14px;border-radius:999px;background:#263449;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,#22c55e,#facc15,#ef4444);transition:width .15s}
+.pill,.btn{border:1px solid var(--border);background:var(--card);color:var(--text);border-radius:12px;padding:10px 13px}
+.btn{cursor:pointer;font-weight:800}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 250px;gap:12px}
+.card{background:rgba(17,24,39,.96);border:1px solid var(--border);border-radius:18px;overflow:hidden}
+.head{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.muted{color:var(--muted);font-size:13px}
+.arena{position:relative;aspect-ratio:4/3;min-height:430px;background:
+radial-gradient(circle at 50% 20%,rgba(59,130,246,.16),transparent 35%),
+linear-gradient(180deg,#172033 0%,#0f172a 100%);overflow:hidden}
+canvas{width:100%;height:100%;display:block;touch-action:none}
+.ko{position:absolute;left:20px;right:20px;top:20px;padding:12px;text-align:center;font-size:24px;font-weight:1000;background:rgba(31,41,55,.96);border:1px solid var(--border);border-radius:14px}
+.hidden{display:none}
+.attacks{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.attack{min-height:62px;border:1px solid var(--border);border-radius:13px;background:#172033;color:#fff;padding:8px;font-weight:800;cursor:pointer}
+.side{display:grid;gap:12px;align-content:start}
+.side .card{padding:14px}
+.side h3{margin:0 0 10px}
+label{display:block;font-size:13px;font-weight:800;margin-top:9px}
+input,select{margin-top:6px;width:100%;padding:10px;border-radius:10px;border:1px solid var(--border);background:#0f172a;color:#fff}
+@media(max-width:840px){.grid{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr}.attacks{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.app{padding:8px}.side{grid-template-columns:1fr}.arena{min-height:470px}.attacks{grid-template-columns:1fr 1fr}}
+</style>
 </head>
 <body>
-  <main class="app">
-    <div class="topbar">
-      <div class="meter">
-        <div class="meter-row"><span>Nível de Drama</span><span id="dramaValue">0%</span></div>
-        <div class="bar"><div id="dramaBar"></div></div>
+<main class="app">
+  <div class="top">
+    <div class="meter">
+      <div class="meterrow"><span>Nível de Drama</span><span id="dramaText">0%</span></div>
+      <div class="bar"><div id="dramaFill" class="fill"></div></div>
+    </div>
+    <div class="pill">Combo <strong id="comboText">x1</strong></div>
+    <button id="resetBtn" class="btn">Reiniciar</button>
+  </div>
+
+  <div class="grid">
+    <section>
+      <div class="card">
+        <div class="head">
+          <strong>BLACK GAME — Arena</strong>
+          <span id="status" class="muted">Toque e arraste qualquer parte do boneco</span>
+        </div>
+        <div id="arena" class="arena">
+          <canvas id="canvas"></canvas>
+          <div id="ko" class="ko hidden">DRAMA MÁXIMO 🤯</div>
+        </div>
       </div>
-      <div class="pill">Combo <strong id="comboValue">x1</strong></div>
-      <button id="resetBtn" class="btn">Reiniciar</button>
-    </div>
 
-    <div class="layout">
-      <section>
-        <div class="arena-card">
-          <div class="arena-head">
-            <strong>Arena do Grupo</strong>
-            <span id="statusText" class="muted">Arraste o boneco e jogue contra as paredes</span>
-          </div>
-          <div id="arenaWrap" class="arena-wrap">
-            <canvas id="gameCanvas"></canvas>
-            <div id="koText" class="ko hidden">DRAMA MÁXIMO 🤯</div>
-          </div>
-        </div>
+      <div class="attacks">
+        <button class="attack" data-a="messages">💬 Chuva de Mensagens</button>
+        <button class="attack" data-a="stickers">😹 Avalanche de Figurinhas</button>
+        <button class="attack" data-a="audio">🎙️ Áudio de 10 Minutos</button>
+        <button class="attack" data-a="leave">🚪 Sair do Grupo</button>
+        <button class="attack" data-a="roller">🚜 Rolo do Drama</button>
+      </div>
+    </section>
 
-        <div class="attacks">
-          <button class="attack" data-attack="messages">💬 Chuva de Mensagens</button>
-          <button class="attack" data-attack="stickers">😹 Avalanche de Figurinhas</button>
-          <button class="attack" data-attack="audio">🎙️ Áudio de 10 Minutos</button>
-          <button class="attack" data-attack="leave">🚪 Sair do Grupo</button>
-          <button class="attack" data-attack="roller">🚜 Rolo do Drama</button>
-        </div>
-      </section>
+    <aside class="side">
+      <div class="card">
+        <h3>Personagem</h3>
+        <label>Apelido
+          <input id="nickname" value="Amigo do Grupo" maxlength="24">
+        </label>
+        <label>Cor da roupa
+          <select id="shirt">
+            <option value="#6b7280">Cinza</option>
+            <option value="#2563eb">Azul</option>
+            <option value="#16a34a">Verde</option>
+            <option value="#dc2626">Vermelho</option>
+            <option value="#7c3aed">Roxo</option>
+          </select>
+        </label>
+      </div>
+      <div class="card">
+        <h3>Como jogar</h3>
+        <div class="muted">Segure cabeça, braços, tronco ou pernas, arraste e solte. O corpo continua conectado como boneco de pano.</div>
+      </div>
+      <div class="card">
+        <h3>Última zoeira</h3>
+        <div id="log" class="muted">Nenhuma ainda.</div>
+      </div>
+    </aside>
+  </div>
+</main>
 
-      <aside class="side">
-        <div class="side-card">
-          <h3>Personagem</h3>
-          <label>Apelido
-            <input id="nameInput" value="Amigo do Grupo" maxlength="24" />
-          </label>
-          <label>Cor da roupa
-            <select id="shirtSelect">
-              <option value="#6b7280">Cinza</option>
-              <option value="#2563eb">Azul</option>
-              <option value="#16a34a">Verde</option>
-              <option value="#dc2626">Vermelho</option>
-              <option value="#7c3aed">Roxo</option>
-            </select>
-          </label>
-        </div>
+<script>
+(() => {
+  const canvas = document.getElementById('canvas');
+  const arena = document.getElementById('arena');
+  const ctx = canvas.getContext('2d');
+  const dramaFill = document.getElementById('dramaFill');
+  const dramaText = document.getElementById('dramaText');
+  const comboText = document.getElementById('comboText');
+  const status = document.getElementById('status');
+  const log = document.getElementById('log');
+  const ko = document.getElementById('ko');
+  const nickname = document.getElementById('nickname');
+  const shirt = document.getElementById('shirt');
 
-        <div class="side-card">
-          <h3>Como jogar</h3>
-          <p class="muted">Segure qualquer parte do boneco, arraste e solte. Use ataques diferentes em sequência para aumentar o combo.</p>
-        </div>
+  let W=800,H=600,dpr=1;
+  let points=[], links=[], particles=[];
+  let drama=0, combo=1, lastAttack='', comboTimer=0;
+  let grabbed=null, pointer={x:0,y:0,down:false,px:0,py:0};
+  let lastTime=performance.now(), raf=0;
 
-        <div class="side-card">
-          <h3>Última zoeira</h3>
-          <div id="eventLog" class="muted log">Nenhuma ainda.</div>
-        </div>
-      </aside>
-    </div>
-  </main>
+  function resize(){
+    const r=arena.getBoundingClientRect();
+    W=Math.max(320,Math.round(r.width));
+    H=Math.max(430,Math.round(r.height));
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    canvas.width=Math.round(W*dpr);
+    canvas.height=Math.round(H*dpr);
+    canvas.style.width=W+'px';
+    canvas.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    resetCharacter();
+  }
 
-  <script type="module">
-    import Matter from "https://cdn.jsdelivr.net/npm/matter-js@0.20.0/+esm";
+  function P(x,y,r=12,name=''){
+    return {x,y,ox:x,oy:y,r,name,pinned:false};
+  }
+  function link(a,b,len,stiff=.9){ links.push({a,b,len,stiff}); }
 
-    const { Engine, Render, Runner, Bodies, Body, Composite, Constraint, Mouse, MouseConstraint, Events } = Matter;
-    const wrap = document.getElementById('arenaWrap');
-    const oldCanvas = document.getElementById('gameCanvas');
-    const dramaBar = document.getElementById('dramaBar');
-    const dramaValue = document.getElementById('dramaValue');
-    const comboValue = document.getElementById('comboValue');
-    const statusText = document.getElementById('statusText');
-    const logEl = document.getElementById('eventLog');
-    const koText = document.getElementById('koText');
-    const nameInput = document.getElementById('nameInput');
-    const shirtSelect = document.getElementById('shirtSelect');
+  function resetCharacter(){
+    const cx=W*.5, cy=Math.min(H*.35,210);
+    points=[
+      P(cx,cy-80,32,'head'),
+      P(cx,cy,22,'torso'),
+      P(cx-45,cy-15,15,'lShoulder'), P(cx-70,cy+35,13,'lHand'),
+      P(cx+45,cy-15,15,'rShoulder'), P(cx+70,cy+35,13,'rHand'),
+      P(cx-20,cy+85,16,'lKnee'), P(cx-20,cy+155,14,'lFoot'),
+      P(cx+20,cy+85,16,'rKnee'), P(cx+20,cy+155,14,'rFoot')
+    ];
+    links=[];
+    link(points[0],points[1],68,.98);
+    link(points[1],points[2],48,.95); link(points[2],points[3],62,.93);
+    link(points[1],points[4],48,.95); link(points[4],points[5],62,.93);
+    link(points[1],points[6],88,.96); link(points[6],points[7],70,.95);
+    link(points[1],points[8],88,.96); link(points[8],points[9],70,.95);
+    link(points[6],points[8],40,.9);
+    grabbed=null;
+  }
 
-    const engine = Engine.create();
-    engine.gravity.y = 1.05;
-    const world = engine.world;
-
-    let render, runner;
-    let ragdoll = [], floor;
-    let drama = 0, combo = 1, lastAttack = '', comboTimer;
-    let stageW = 800, stageH = 600;
-
-    function sizeArena(){
-      const r = wrap.getBoundingClientRect();
-      stageW = Math.max(320, Math.round(r.width));
-      stageH = Math.max(360, Math.round(r.height));
+  function verlet(dt){
+    const g=0.65*(dt/16.67)*(dt/16.67);
+    for(const p of points){
+      if(p===grabbed && pointer.down){
+        p.x=pointer.x; p.y=pointer.y;
+        p.ox=pointer.px; p.oy=pointer.py;
+        continue;
+      }
+      const vx=(p.x-p.ox)*0.995, vy=(p.y-p.oy)*0.995;
+      p.ox=p.x; p.oy=p.y;
+      p.x+=vx; p.y+=vy+g;
+      // arena bounds
+      if(p.x<p.r){p.x=p.r;p.ox=p.x+vx*.55}
+      if(p.x>W-p.r){p.x=W-p.r;p.ox=p.x+vx*.55}
+      if(p.y<p.r){p.y=p.r;p.oy=p.y+vy*.5}
+      if(p.y>H-18-p.r){p.y=H-18-p.r;p.oy=p.y+vy*.48}
     }
-
-    function clearWorld(){
-      Composite.clear(world, false, true);
-      ragdoll = [];
-    }
-
-    function part(x,y,w,h,opts={}){
-      return Bodies.rectangle(x,y,w,h,{
-        chamfer:{radius:Math.min(w,h)*0.28},
-        friction:.5,restitution:.35,density:.0025,...opts
-      });
-    }
-
-    function link(a,b,pa,pb,len=7,stiff=.75){
-      return Constraint.create({
-        bodyA:a, bodyB:b, pointA:pa, pointB:pb,
-        length:len, stiffness:stiff, damping:.08
-      });
-    }
-
-    function makeRagdoll(){
-      const cx=stageW*.5, cy=stageH*.34, shirt=shirtSelect.value;
-      const head=Bodies.circle(cx,cy-76,34,{restitution:.55,density:.0018,render:{fillStyle:'#f2c29b'}});
-      const torso=part(cx,cy,58,92,{render:{fillStyle:shirt}});
-      const uaL=part(cx-48,cy-12,22,68,{render:{fillStyle:shirt}});
-      const uaR=part(cx+48,cy-12,22,68,{render:{fillStyle:shirt}});
-      const laL=part(cx-62,cy+46,18,65,{render:{fillStyle:'#d1d5db'}});
-      const laR=part(cx+62,cy+46,18,65,{render:{fillStyle:'#d1d5db'}});
-      const legL=part(cx-20,cy+95,26,82,{render:{fillStyle:'#374151'}});
-      const legR=part(cx+20,cy+95,26,82,{render:{fillStyle:'#374151'}});
-      const shinL=part(cx-20,cy+165,22,72,{render:{fillStyle:'#111827'}});
-      const shinR=part(cx+20,cy+165,22,72,{render:{fillStyle:'#111827'}});
-      ragdoll=[head,torso,uaL,uaR,laL,laR,legL,legR,shinL,shinR];
-      Composite.add(world,ragdoll);
-      Composite.add(world,[
-        link(head,torso,{x:0,y:28},{x:0,y:-45},4,.85),
-        link(torso,uaL,{x:-29,y:-25},{x:0,y:-30}),
-        link(torso,uaR,{x:29,y:-25},{x:0,y:-30}),
-        link(uaL,laL,{x:0,y:31},{x:0,y:-30}),
-        link(uaR,laR,{x:0,y:31},{x:0,y:-30}),
-        link(torso,legL,{x:-18,y:43},{x:0,y:-38},8,.8),
-        link(torso,legR,{x:18,y:43},{x:0,y:-38},8,.8),
-        link(legL,shinL,{x:0,y:38},{x:0,y:-34},5,.78),
-        link(legR,shinR,{x:0,y:38},{x:0,y:-34},5,.78)
-      ]);
-    }
-
-    function buildArena(){
-      clearWorld();
-      sizeArena();
-      floor=Bodies.rectangle(stageW/2,stageH+25,stageW+100,70,{isStatic:true,render:{fillStyle:'#475569'}});
-      const left=Bodies.rectangle(-25,stageH/2,50,stageH,{isStatic:true,render:{fillStyle:'#334155'}});
-      const right=Bodies.rectangle(stageW+25,stageH/2,50,stageH,{isStatic:true,render:{fillStyle:'#334155'}});
-      const roof=Bodies.rectangle(stageW/2,-25,stageW+100,50,{isStatic:true,render:{fillStyle:'#334155'}});
-      Composite.add(world,[floor,left,right,roof]);
-      makeRagdoll();
-    }
-
-    function faceEmoji(){
-      if(drama>=100)return '😵';
-      if(drama>=75)return '😱';
-      if(drama>=50)return '😖';
-      if(drama>=25)return '😒';
-      return '😏';
-    }
-
-    function updateHud(){
-      drama=Math.max(0,Math.min(100,drama));
-      dramaBar.style.width=drama+'%';
-      dramaValue.textContent=Math.round(drama)+'%';
-      comboValue.textContent='x'+combo;
-
-      if(drama>=100){
-        koText.classList.remove('hidden');
-        burstStickers();
-        setTimeout(()=>koText.classList.add('hidden'),1300);
-        drama=0; combo=1;
-        setTimeout(updateHud,200);
+    for(let k=0;k<8;k++){
+      for(const l of links){
+        let dx=l.b.x-l.a.x,dy=l.b.y-l.a.y;
+        let d=Math.hypot(dx,dy)||.001;
+        let diff=(d-l.len)/d*.5*l.stiff;
+        let ox=dx*diff, oy=dy*diff;
+        if(l.a!==grabbed){l.a.x+=ox;l.a.y+=oy}
+        if(l.b!==grabbed){l.b.x-=ox;l.b.y-=oy}
       }
     }
+  }
 
-    function damage(amount,label){
-      combo = label===lastAttack ? Math.max(1,combo-1) : Math.min(5,combo+1);
-      lastAttack=label;
-      clearTimeout(comboTimer);
-      comboTimer=setTimeout(()=>{combo=1;lastAttack='';updateHud();},4500);
-      const gain=Math.round(amount*combo*.6);
-      drama+=gain;
-      logEl.textContent=`${label} • +${gain} Drama`;
-      updateHud();
+  function drawBone(a,b,width,color){
+    ctx.strokeStyle=color;ctx.lineWidth=width;ctx.lineCap='round';
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+  }
+
+  function face(){
+    if(drama>=75)return '😱';
+    if(drama>=50)return '😖';
+    if(drama>=25)return '😒';
+    return '😏';
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+
+    // floor
+    ctx.fillStyle='#243244';ctx.fillRect(0,H-18,W,18);
+    ctx.fillStyle='rgba(255,255,255,.05)';
+    for(let x=0;x<W;x+=36)ctx.fillRect(x,H-18,18,2);
+
+    const c=shirt.value;
+    drawBone(points[1],points[2],22,c); drawBone(points[2],points[3],17,'#cbd5e1');
+    drawBone(points[1],points[4],22,c); drawBone(points[4],points[5],17,'#cbd5e1');
+    drawBone(points[1],points[6],28,'#334155'); drawBone(points[6],points[7],23,'#111827');
+    drawBone(points[1],points[8],28,'#334155'); drawBone(points[8],points[9],23,'#111827');
+
+    // torso
+    ctx.save();
+    ctx.translate(points[1].x,points[1].y);
+    ctx.fillStyle=c;ctx.beginPath();ctx.roundRect(-30,-42,60,88,16);ctx.fill();
+    ctx.restore();
+
+    // head
+    ctx.fillStyle='#f2c29b';ctx.beginPath();ctx.arc(points[0].x,points[0].y,32,0,Math.PI*2);ctx.fill();
+    ctx.font='30px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(face(),points[0].x,points[0].y+2);
+
+    // name
+    ctx.font='700 14px system-ui';ctx.fillStyle='rgba(255,255,255,.9)';
+    ctx.fillText(nickname.value||'Amigo',W/2,25);
+
+    // particles
+    for(const q of particles){
+      ctx.save();ctx.translate(q.x,q.y);ctx.rotate(q.rot);
+      ctx.fillStyle=q.color;
+      if(q.kind==='msg'){ctx.fillRect(-18,-12,36,24);ctx.fillStyle='#fff';ctx.font='14px sans-serif';ctx.fillText('💬',0,1)}
+      else if(q.kind==='sticker'){ctx.font='28px sans-serif';ctx.fillText(q.char,0,0)}
+      else if(q.kind==='roller'){ctx.fillStyle='#f97316';ctx.fillRect(-65,-30,130,60);ctx.fillStyle='#fff';ctx.font='900 18px sans-serif';ctx.fillText('DRAMA',0,0)}
+      ctx.restore();
     }
+  }
 
-    function addBox(x,y,w,h,label,fill='#22c55e',vx=0,vy=0){
-      const b=Bodies.rectangle(x,y,w,h,{restitution:.75,density:.006,render:{fillStyle:fill}});
-      b.label=label;
-      Body.setVelocity(b,{x:vx,y:vy});
-      Composite.add(world,b);
-      return b;
-    }
-
-    function rainMessages(){
-      statusText.textContent='Chovendo mensagem no grupo...';
-      for(let i=0;i<10;i++) setTimeout(()=>{
-        addBox(40+Math.random()*(stageW-80),-40,42,32,'MSG','#22c55e',Math.random()*4-2,2)
-      },i*90);
-      damage(8,'Chuva de Mensagens');
-    }
-
-    function stickers(){
-      statusText.textContent='Figurinhas fora de controle!';
-      const colors=['#f59e0b','#a855f7','#06b6d4'];
-      for(let i=0;i<14;i++) setTimeout(()=>{
-        addBox(30+Math.random()*(stageW-60),-30,36,36,'STICKER',colors[i%3],Math.random()*6-3,3)
-      },i*65);
-      damage(10,'Avalanche de Figurinhas');
-    }
-
-    function audioBlast(){
-      statusText.textContent='Áudio de 10 minutos em 2x...';
-      const speaker=addBox(55,stageH*.55,70,70,'SPEAKER','#64748b');
-      Body.setStatic(speaker,true);
-      let n=0;
-      const id=setInterval(()=>{
-        ragdoll.forEach(p=>Body.applyForce(p.position,{x:.018,y:(Math.random()-.5)*.01}));
-        n++;
-        if(n>18){clearInterval(id);Composite.remove(world,speaker);}
-      },70);
-      damage(9,'Áudio de 10 Minutos');
-    }
-
-    function leaveGroup(){
-      statusText.textContent='Você saiu do grupo.';
-      Composite.remove(world,floor);
-      ragdoll.forEach(p=>Body.applyForce(p.position,{x:(Math.random()-.5)*.004,y:.012}));
-      setTimeout(()=>{
-        Composite.add(world,floor);
-        ragdoll.forEach((p,i)=>Body.setPosition(p,{x:stageW/2+(i%2?10:-10),y:stageH*.3+i*4}));
-      },1600);
-      damage(13,'Sair do Grupo');
-    }
-
-    function roller(){
-      statusText.textContent='DRAMA chegando pela esquerda!';
-      const r=addBox(-90,stageH-90,140,72,'ROLLER','#f97316',18,0);
-      r.frictionAir=.005;
-      setTimeout(()=>Composite.remove(world,r),2200);
-      damage(14,'Rolo do Drama');
-    }
-
-    function burstStickers(){
-      const colors=['#f43f5e','#22c55e','#3b82f6','#eab308'];
-      for(let i=0;i<20;i++){
-        const a=Math.PI*2*i/20, s=6+Math.random()*8;
-        addBox(stageW/2,stageH*.35,24,24,'KO_STICKER',colors[i%4],Math.cos(a)*s,Math.sin(a)*s-4);
-      }
-    }
-
-    function initRender(){
-      sizeArena();
-
-      if(render){
-        Render.stop(render);
-        if(render.canvas?.parentNode) render.canvas.remove();
-      }
-      const canvas=document.createElement('canvas');
-      wrap.prepend(canvas);
-
-      render=Render.create({
-        element:wrap,
-        canvas,
-        engine,
-        options:{
-          width:stageW,height:stageH,wireframes:false,
-          background:'transparent',pixelRatio:Math.min(devicePixelRatio||1,2)
+  function stepParticles(dt){
+    const f=dt/16.67;
+    for(const q of particles){
+      q.vy+=.45*f;q.x+=q.vx*f;q.y+=q.vy*f;q.rot+=q.vr*f;
+      if(q.kind==='roller'){
+        // push character on contact
+        for(const p of points){
+          if(Math.abs(p.x-q.x)<85 && Math.abs(p.y-q.y)<55){
+            p.ox-=18; drama=Math.min(100,drama+.35);
+          }
         }
-      });
-
-      buildArena();
-      Render.run(render);
-
-      if(runner) Runner.stop(runner);
-      runner=Runner.create();
-      Runner.run(runner,engine);
-
-      const mouse=Mouse.create(canvas);
-      const mc=MouseConstraint.create(engine,{
-        mouse,
-        constraint:{stiffness:.18,render:{visible:false}}
-      });
-      Composite.add(world,mc);
-      render.mouse=mouse;
-
-      Events.on(render,'afterRender',()=>{
-        const ctx=render.context, h=ragdoll[0];
-        if(!h)return;
-
-        ctx.save();
-        ctx.font='30px system-ui';
-        ctx.textAlign='center';
-        ctx.textBaseline='middle';
-        ctx.fillText(faceEmoji(),h.position.x,h.position.y+1);
-        ctx.restore();
-
-        ctx.save();
-        ctx.font='700 14px system-ui';
-        ctx.textAlign='center';
-        ctx.fillStyle='rgba(255,255,255,.9)';
-        ctx.fillText(nameInput.value||'Amigo',stageW/2,28);
-        ctx.restore();
-      });
+      }else{
+        for(const p of points){
+          if(Math.hypot(p.x-q.x,p.y-q.y)<p.r+20){
+            p.ox-=q.vx*.25;p.oy-=q.vy*.25;
+          }
+        }
+      }
     }
+    particles=particles.filter(q=>q.y<H+120 && q.x<W+180 && q.x>-180 && q.life-- >0);
+  }
 
-    document.querySelectorAll('.attack').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        const a=btn.dataset.attack;
-        if(a==='messages')rainMessages();
-        if(a==='stickers')stickers();
-        if(a==='audio')audioBlast();
-        if(a==='leave')leaveGroup();
-        if(a==='roller')roller();
-      });
-    });
+  function loop(t){
+    const dt=Math.min(34,t-lastTime||16.67);lastTime=t;
+    verlet(dt);stepParticles(dt);draw();
+    raf=requestAnimationFrame(loop);
+  }
 
-    document.getElementById('resetBtn').addEventListener('click',()=>{
-      drama=0; combo=1; lastAttack='';
-      statusText.textContent='Arena reiniciada';
-      logEl.textContent='Nenhuma ainda.';
-      updateHud();
-      buildArena();
-    });
+  function pos(e){
+    const r=canvas.getBoundingClientRect();
+    return {x:(e.clientX-r.left)*W/r.width,y:(e.clientY-r.top)*H/r.height};
+  }
+  canvas.addEventListener('pointerdown',e=>{
+    const p=pos(e);pointer.down=true;pointer.x=pointer.px=p.x;pointer.y=pointer.py=p.y;
+    let best=null,bd=999;
+    for(const pt of points){
+      const d=Math.hypot(pt.x-p.x,pt.y-p.y);
+      if(d<Math.max(42,pt.r+18)&&d<bd){best=pt;bd=d}
+    }
+    grabbed=best; canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointermove',e=>{
+    const p=pos(e);pointer.px=pointer.x;pointer.py=pointer.y;pointer.x=p.x;pointer.y=p.y;
+  });
+  function release(){pointer.down=false;grabbed=null}
+  canvas.addEventListener('pointerup',release);canvas.addEventListener('pointercancel',release);
 
-    shirtSelect.addEventListener('change',buildArena);
+  function hud(){
+    drama=Math.max(0,Math.min(100,drama));
+    dramaFill.style.width=drama+'%';dramaText.textContent=Math.round(drama)+'%';comboText.textContent='x'+combo;
+    if(drama>=100){
+      ko.classList.remove('hidden');
+      burst();
+      setTimeout(()=>{ko.classList.add('hidden');drama=0;combo=1;hud();},1300);
+    }
+  }
+  function hit(amount,label){
+    combo=label===lastAttack?Math.max(1,combo-1):Math.min(5,combo+1);
+    lastAttack=label;clearTimeout(comboTimer);
+    comboTimer=setTimeout(()=>{combo=1;lastAttack='';hud()},4200);
+    const gain=Math.round(amount*combo*.6);drama+=gain;
+    log.textContent=label+' • +'+gain+' Drama';hud();
+  }
+  function msg(){
+    status.textContent='Chovendo mensagem no grupo...';
+    for(let i=0;i<12;i++)setTimeout(()=>particles.push({kind:'msg',x:30+Math.random()*(W-60),y:-20,vx:Math.random()*3-1.5,vy:1,vr:.05,rot:0,color:'#22c55e',life:260}),i*70);
+    hit(8,'Chuva de Mensagens');
+  }
+  function stickers(){
+    status.textContent='Avalanche de figurinhas!';
+    const chars=['😂','🤡','😹','🔥','💀','🙃'];
+    for(let i=0;i<18;i++)setTimeout(()=>particles.push({kind:'sticker',char:chars[i%chars.length],x:25+Math.random()*(W-50),y:-20,vx:Math.random()*5-2.5,vy:1,vr:.08,rot:0,color:'#fff',life:260}),i*55);
+    hit(10,'Avalanche de Figurinhas');
+  }
+  function audio(){
+    status.textContent='Áudio de 10 minutos em 2x...';
+    let n=0;const id=setInterval(()=>{for(const p of points){p.ox-=12+Math.random()*8;p.oy+=Math.random()*6-3}n++;if(n>16)clearInterval(id)},70);
+    hit(9,'Áudio de 10 Minutos');
+  }
+  function leave(){
+    status.textContent='Você saiu do grupo.';
+    for(const p of points){p.oy-=18;p.ox+=Math.random()*12-6}
+    hit(13,'Sair do Grupo');
+  }
+  function roller(){
+    status.textContent='DRAMA chegando pela esquerda!';
+    particles.push({kind:'roller',x:-90,y:H-70,vx:12,vy:0,vr:0,rot:0,color:'#f97316',life:140});
+    hit(14,'Rolo do Drama');
+  }
+  function burst(){
+    const chars=['😂','🔥','🤡','💀','😹'];
+    for(let i=0;i<30;i++){
+      const a=Math.PI*2*i/30,s=5+Math.random()*9;
+      particles.push({kind:'sticker',char:chars[i%5],x:W/2,y:H*.35,vx:Math.cos(a)*s,vy:Math.sin(a)*s-5,vr:.12,rot:0,color:'#fff',life:180});
+    }
+  }
 
-    let resizeTimer;
-    window.addEventListener('resize',()=>{
-      clearTimeout(resizeTimer);
-      resizeTimer=setTimeout(initRender,220);
-    });
+  document.querySelectorAll('.attack').forEach(b=>b.addEventListener('click',()=>{
+    const a=b.dataset.a;if(a==='messages')msg();if(a==='stickers')stickers();if(a==='audio')audio();if(a==='leave')leave();if(a==='roller')roller();
+  }));
+  document.getElementById('resetBtn').addEventListener('click',()=>{drama=0;combo=1;lastAttack='';particles=[];status.textContent='Arena reiniciada';log.textContent='Nenhuma ainda.';resetCharacter();hud()});
+  shirt.addEventListener('change',()=>{});
+  let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(resize,150)});
 
-    updateHud();
-    initRender();
-  </script>
+  hud();resize();cancelAnimationFrame(raf);raf=requestAnimationFrame(loop);
+})();
+</script>
 </body>
 </html>
